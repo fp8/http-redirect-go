@@ -19,6 +19,43 @@ One of the main reason to use `golang` is that binary it generate requires only 
 build in the Dockerfile actually create docker image from `scratch` which does not contain even simple `sh`.  The
 resulting image is 7.33MB.  As the compiled `goapp` is actually 7.1MB, docker only addes 0.23 MB of overhead.
 
+## Kubernetes Deployment
+
+```yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: redirect-farport
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redirect-farport
+  template:
+    metadata:
+      labels:
+        app: redirect-farport
+    spec:
+      containers:
+      - name: redirect-farport
+        image: farport/http-redirect-go:0.1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8080
+        env:
+          - name: SERVER_PORT
+            value: ":8080"
+          - name: SERVER_REDIRECT
+            value: "https://www.farport.co/"
+          - name: HEALTH_ENDPOINT
+            value: "/healthz"
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+```
+
 ## References
 
 * https://weberc2.bitbucket.io/posts/golang-docker-scratch-app.html

@@ -1,5 +1,5 @@
 #!/bin/bash
 
-IMAGE_NAME=farport/http-redirect-go:0.1
+IMAGE_NAME=farport/http-redirect-go:0.1.0
 
 docker run --rm -p8080:8080 -it $IMAGE_NAME

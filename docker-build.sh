@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IMAGE_NAME=farport/http-redirect-go:0.1
+IMAGE_NAME=farport/http-redirect-go:0.1.0
 IMAGE_ID=$(docker images -qf"reference=$IMAGE_NAME")
 
 if ! [ -z "$IMAGE_ID" ]; then
